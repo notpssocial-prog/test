@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founders Cloud - Your Startup Workspace</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="auth-modal">
+        <div class="auth-modal-content">
+            <div class="auth-header">
+                <span class="logo-icon">🚀</span>
+                <h2>Welcome to Founders Cloud</h2>
+                <p>Your personal startup workspace</p>
+            </div>
+            
+            <!-- Sign In Form -->
+            <div id="signin-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="signin-email">Email</label>
+                    <input type="email" id="signin-email" placeholder="founder@startup.com">
+                </div>
+                <div class="form-group">
+                    <label for="signin-password">Password</label>
+                    <input type="password" id="signin-password" placeholder="••••••••">
+                </div>
+                <button id="signin-btn" class="primary-btn full-width">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+                <p class="auth-switch">
+                    Don't have an account? <a href="#" id="show-signup">Create one</a>
+                </p>
+            </div>
+            
+            <!-- Sign Up Form -->
+            <div id="signup-form" class="auth-form">
+                <div class="form-group">
+                    <label for="signup-name">Founder Name</label>
+                    <input type="text" id="signup-name" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="signup-startup">Startup Name</label>
+                    <input type="text" id="signup-startup" placeholder="My Awesome Startup">
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="founder@startup.com">
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label for="signup-avatar">Choose Avatar</label>
+                    <div class="avatar-picker">
+                        <button class="avatar-option active" data-avatar="👨‍💻">👨‍💻</button>
+                        <button class="avatar-option" data-avatar="👩‍💻">👩‍💻</button>
+                        <button class="avatar-option" data-avatar="🧑‍🚀">🧑‍🚀</button>
+                        <button class="avatar-option" data-avatar="👨‍🔬">👨‍🔬</button>
+                        <button class="avatar-option" data-avatar="👩‍🎨">👩‍🎨</button>
+                        <button class="avatar-option" data-avatar="🦸">🦸</button>
+                        <button class="avatar-option" data-avatar="🧙">🧙</button>
+                        <button class="avatar-option" data-avatar="🤖">🤖</button>
+                    </div>
+                </div>
+                <button id="signup-btn" class="primary-btn full-width">
+                    <i class="fas fa-rocket"></i> Create My Space
+                </button>
+                <p class="auth-switch">
+                    Already have an account? <a href="#" id="show-signin">Sign in</a>
+                </p>
+            </div>
+            
+            <div id="auth-error" class="auth-error"></div>
+        </div>
+    </div>
+
+    <div class="app-container" id="app-container" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">🚀</span>
+                <span class="logo-text">Founders Cloud</span>
+            </div>
+            
+            <!-- Workspace Badge -->
+            <div class="workspace-badge" id="workspace-badge">
+                <span class="workspace-name" id="workspace-name">My Startup</span>
+                <span class="workspace-tag">Workspace</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" data-page="whiteboard">
+                    <i class="fas fa-pen"></i>
+                    <span>Whiteboard</span>
+                </li>
+                <li class="nav-item" data-page="planning">
+                    <i class="fas fa-bullseye"></i>
+                    <span>Planning</span>
+                </li>
+                <li class="nav-item" data-page="todos">
+                    <i class="fas fa-tasks"></i>
+                    <span>To-Do's</span>
+                </li>
+                <li class="nav-item" data-page="funzone">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Fun Zone</span>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile" id="user-profile">
+                    <div class="avatar" id="user-avatar">👨‍💻</div>
+                    <div class="user-info">
+                        <span class="user-name" id="user-name">Founder</span>
+                        <span class="user-status" id="user-status">Building dreams ✨</span>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button id="switch-account-btn" class="icon-btn" title="Switch Account">
+                        <i class="fas fa-users"></i>
+                    </button>
+                    <button id="sign-out-btn" class="icon-btn" title="Sign Out">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <section id="dashboard" class="page active">
+                <header class="page-header">
+                    <h1>Welcome Back, <span id="greeting-name">Founder</span>! 👋</h1>
+                    <p class="greeting-subtitle">Let's crush some goals at <span id="greeting-startup">your startup</span> today!</p>
+                </header>
+                <div class="dashboard-grid">
+                    <div class="stat-card gradient-purple">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-info">
+                            <h3>Tasks Completed</h3>
+                            <span class="stat-number" id="completed-count">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card gradient-blue">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <h3>Active Goals</h3>
+                            <span class="stat-number" id="goals-count">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card gradient-green">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-info">
+                            <h3>Day Streak</h3>
+                            <span class="stat-number" id="streak-count">1</span>
+                        </div>
+                    </div>
+                    <div class="stat-card gradient-orange">
+                        <div class="stat-icon">💡</div>
+                        <div class="stat-info">
+                            <h3>Ideas Saved</h3>
+                            <span class="stat-number" id="ideas-count">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-sections">
+                    <div class="quick-actions">
+                        <h2>Quick Actions</h2>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="navigateTo('whiteboard')">
+                                <i class="fas fa-pen"></i> New Whiteboard
+                            </button>
+                            <button class="action-btn" onclick="navigateTo('todos')">
+                                <i class="fas fa-plus"></i> Add Task
+                            </button>
+                            <button class="action-btn" onclick="navigateTo('planning')">
+                                <i class="fas fa-flag"></i> Set Goal
+                            </button>
+                        </div>
+                    </div>
+                    <div class="motivation-card">
+                        <h2>Daily Motivation 💪</h2>
+                        <blockquote id="daily-quote">
+                            "The only way to do great work is to love what you do."
+                        </blockquote>
+                        <span class="quote-author">- Steve Jobs</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Whiteboard Page -->
+            <section id="whiteboard" class="page">
+                <header class="page-header">
+                    <h1>Whiteboard 🎨</h1>
+                    <p>Sketch your ideas, brainstorm freely!</p>
+                </header>
+                <div class="whiteboard-container">
+                    <div class="whiteboard-tools">
+                        <div class="tool-group">
+                            <button class="tool-btn active" data-tool="pen" title="Pen">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button class="tool-btn" data-tool="eraser" title="Eraser">
+                                <i class="fas fa-eraser"></i>
+                            </button>
+                            <button class="tool-btn" data-tool="text" title="Text">
+                                <i class="fas fa-font"></i>
+                            </button>
+                        </div>
+                        <div class="tool-group colors">
+                            <button class="color-btn active" data-color="#000000" style="background:#000000"></button>
+                            <button class="color-btn" data-color="#FF6B6B" style="background:#FF6B6B"></button>
+                            <button class="color-btn" data-color="#4ECDC4" style="background:#4ECDC4"></button>
+                            <button class="color-btn" data-color="#FFE66D" style="background:#FFE66D"></button>
+                            <button class="color-btn" data-color="#95E1D3" style="background:#95E1D3"></button>
+                            <button class="color-btn" data-color="#A66CFF" style="background:#A66CFF"></button>
+                        </div>
+                        <div class="tool-group">
+                            <label>Size:</label>
+                            <input type="range" id="brush-size" min="1" max="50" value="5">
+                        </div>
+                        <div class="tool-group">
+                            <button class="tool-btn" id="clear-canvas" title="Clear">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="tool-btn" id="save-canvas" title="Save">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <canvas id="drawing-canvas"></canvas>
+                </div>
+            </section>
+
+            <!-- Planning Page -->
+            <section id="planning" class="page">
+                <header class="page-header">
+                    <h1>Planning & Goals 🎯</h1>
+                    <p>Set your targets and track your progress!</p>
+                </header>
+                <div class="planning-container">
+                    <div class="add-goal-section">
+                        <input type="text" id="goal-input" placeholder="Enter your goal...">
+                        <select id="goal-priority">
+                            <option value="high">🔴 High Priority</option>
+                            <option value="medium">🟡 Medium Priority</option>
+                            <option value="low">🟢 Low Priority</option>
+                        </select>
+                        <input type="date" id="goal-deadline">
+                        <button id="add-goal-btn" class="primary-btn">Add Goal</button>
+                    </div>
+                    <div class="goals-board">
+                        <div class="goal-column" data-status="planning">
+                            <h3>📋 Planning</h3>
+                            <div class="goal-list" id="planning-goals"></div>
+                        </div>
+                        <div class="goal-column" data-status="inprogress">
+                            <h3>🚀 In Progress</h3>
+                            <div class="goal-list" id="inprogress-goals"></div>
+                        </div>
+                        <div class="goal-column" data-status="completed">
+                            <h3>✅ Completed</h3>
+                            <div class="goal-list" id="completed-goals"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Todos Page -->
+            <section id="todos" class="page">
+                <header class="page-header">
+                    <h1>To-Do List ✅</h1>
+                    <p>Stay organized and productive!</p>
+                </header>
+                <div class="todos-container">
+                    <div class="add-todo-section">
+                        <input type="text" id="todo-input" placeholder="What needs to be done?">
+                        <button id="add-todo-btn" class="primary-btn">
+                            <i class="fas fa-plus"></i> Add Task
+                        </button>
+                    </div>
+                    <div class="todo-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="active">Active</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                    </div>
+                    <ul class="todo-list" id="todo-list"></ul>
+                    <div class="todo-stats">
+                        <span id="todo-count">0 tasks remaining</span>
+                        <button id="clear-completed" class="text-btn">Clear Completed</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fun Zone Page -->
+            <section id="funzone" class="page">
+                <header class="page-header">
+                    <h1>Fun Zone 🎮</h1>
+                    <p>Take a break, you deserve it!</p>
+                </header>
+                <div class="funzone-container">
+                    <div class="fun-card pomodoro-card">
+                        <h3>🍅 Pomodoro Timer</h3>
+                        <div class="timer-display">
+                            <span id="timer-minutes">25</span>:<span id="timer-seconds">00</span>
+                        </div>
+                        <div class="timer-controls">
+                            <button id="timer-start" class="timer-btn">Start</button>
+                            <button id="timer-pause" class="timer-btn">Pause</button>
+                            <button id="timer-reset" class="timer-btn">Reset</button>
+                        </div>
+                        <div class="timer-modes">
+                            <button class="mode-btn active" data-minutes="25">Work</button>
+                            <button class="mode-btn" data-minutes="5">Short Break</button>
+                            <button class="mode-btn" data-minutes="15">Long Break</button>
+                        </div>
+                    </div>
+                    <div class="fun-card achievements-card">
+                        <h3>🏆 Achievements</h3>
+                        <div class="achievements-grid">
+                            <div class="achievement" data-unlocked="false">
+                                <span class="achievement-icon">🌟</span>
+                                <span class="achievement-name">First Task</span>
+                            </div>
+                            <div class="achievement" data-unlocked="false">
+                                <span class="achievement-icon">🔥</span>
+                                <span class="achievement-name">7 Day Streak</span>
+                            </div>
+                            <div class="achievement" data-unlocked="false">
+                                <span class="achievement-icon">💯</span>
+                                <span class="achievement-name">100 Tasks</span>
+                            </div>
+                            <div class="achievement" data-unlocked="false">
+                                <span class="achievement-icon">🎨</span>
+                                <span class="achievement-name">Artist</span>
+                            </div>
+                            <div class="achievement" data-unlocked="false">
+                                <span class="achievement-icon">🏃</span>
+                                <span class="achievement-name">Speed Demon</span>
+                            </div>
+                            <div class="achievement" data-unlocked="false">
+                                <span class="achievement-icon">🧘</span>
+                                <span class="achievement-name">Zen Master</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fun-card mood-tracker">
+                        <h3>😊 How are you feeling?</h3>
+                        <div class="mood-options">
+                            <button class="mood-btn" data-mood="amazing">🤩</button>
+                            <button class="mood-btn" data-mood="good">😊</button>
+                            <button class="mood-btn" data-mood="okay">😐</button>
+                            <button class="mood-btn" data-mood="tired">😴</button>
+                            <button class="mood-btn" data-mood="stressed">😰</button>
+                        </div>
+                        <p id="mood-response"></p>
+                    </div>
+                    <div class="fun-card mini-game">
+                        <h3>🎯 Click Challenge</h3>
+                        <p>How many clicks in 10 seconds?</p>
+                        <div class="game-area">
+                            <div id="click-target" class="click-target">Click Me!</div>
+                            <div class="game-stats">
+                                <span>Clicks: <strong id="click-count">0</strong></span>
+                                <span>Time: <strong id="game-timer">10</strong>s</span>
+                            </div>
+                            <button id="start-game" class="primary-btn">Start Game</button>
+                        </div>
+                        <p id="high-score">High Score: 0</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Account Switcher Modal -->
+    <div id="account-modal" class="account-modal hidden">
+        <div class="account-modal-content">
+            <div class="account-modal-header">
+                <h3><i class="fas fa-users"></i> Switch Account</h3>
+                <button id="close-account-modal" class="close-btn">&times;</button>
+            </div>
+            <div class="account-list" id="account-list"></div>
+            <button id="add-account-btn" class="secondary-btn full-width">
+                <i class="fas fa-plus"></i> Add Another Account
+            </button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
