@@ -1,3 +1,93 @@
+// In-memory storage for demo (replace with DB for production)
+const userData = {};
+
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated && req.isAuthenticated()) return next();
+    res.redirect('/auth/google');
+}
+
+app.get('/founders', ensureAuthenticated, (req, res) => {
+    const userId = req.user.id;
+    if (!userData[userId]) {
+        userData[userId] = { tasks: [], workLog: [] };
+    }
+    const { tasks, workLog } = userData[userId];
+    res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Founders Area | Founders Cloud</title>
+        <link rel="stylesheet" href="/styles.css">
+        <style>
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; }
+        .founders-container { max-width: 600px; margin: 60px auto; background: #111; border-radius: 20px; box-shadow: 0 8px 40px #000a; padding: 2.5rem 2rem; }
+        h1 { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
+        .section { margin-bottom: 2.5rem; }
+        .tasks-list { list-style: none; padding: 0; }
+        .tasks-list li { background: #222; margin-bottom: 10px; padding: 12px 18px; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; }
+        .task-completed { text-decoration: line-through; color: #aaa; }
+        .add-task-form, .log-hours-form { display: flex; gap: 10px; margin-bottom: 1.2rem; }
+        .add-task-form input, .log-hours-form input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #181818; color: #fff; }
+        .add-task-form button, .log-hours-form button { background: #fff; color: #000; border: none; border-radius: 8px; padding: 10px 18px; font-weight: 600; cursor: pointer; }
+        .add-task-form button:hover, .log-hours-form button:hover { background: #000; color: #fff; border: 1px solid #fff; }
+        .worklog-list { list-style: none; padding: 0; }
+        .worklog-list li { background: #222; margin-bottom: 10px; padding: 12px 18px; border-radius: 10px; }
+        .nav-link { color: #fff; text-decoration: underline; margin-bottom: 2rem; display: inline-block; }
+        </style>
+    </head>
+    <body>
+        <div class="founders-container">
+            <a href="/profile" class="nav-link">← Back to Profile</a>
+            <h1>Founders Area</h1>
+            <div class="section">
+                <h2>Today's Tasks</h2>
+                <form class="add-task-form" method="POST" action="/add-task">
+                    <input type="text" name="task" placeholder="Add a new task..." required>
+                    <button type="submit">Add Task</button>
+                </form>
+                <ul class="tasks-list">
+                    ${tasks.map((t, i) => `<li><span class="${t.done ? 'task-completed' : ''}">${t.text}</span> <form style="display:inline" method="POST" action="/toggle-task"><input type="hidden" name="index" value="${i}"><button type="submit">${t.done ? 'Undo' : 'Done'}</button></form></li>`).join('')}
+                </ul>
+            </div>
+            <div class="section">
+                <h2>Log Work Hours</h2>
+                <form class="log-hours-form" method="POST" action="/log-hours">
+                    <input type="number" name="hours" min="0" step="0.1" placeholder="Hours worked today" required>
+                    <button type="submit">Log Hours</button>
+                </form>
+                <ul class="worklog-list">
+                    ${workLog.map((w, i) => `<li>Day ${i+1}: <strong>${w} hours</strong></li>`).join('')}
+                </ul>
+            </div>
+        </div>
+    </body>
+    </html>
+    `);
+});
+
+app.post('/add-task', express.urlencoded({ extended: true }), ensureAuthenticated, (req, res) => {
+    const userId = req.user.id;
+    if (!userData[userId]) userData[userId] = { tasks: [], workLog: [] };
+    userData[userId].tasks.push({ text: req.body.task, done: false });
+    res.redirect('/founders');
+});
+
+app.post('/toggle-task', express.urlencoded({ extended: true }), ensureAuthenticated, (req, res) => {
+    const userId = req.user.id;
+    const idx = parseInt(req.body.index);
+    if (!userData[userId]) userData[userId] = { tasks: [], workLog: [] };
+    if (userData[userId].tasks[idx]) userData[userId].tasks[idx].done = !userData[userId].tasks[idx].done;
+    res.redirect('/founders');
+});
+
+app.post('/log-hours', express.urlencoded({ extended: true }), ensureAuthenticated, (req, res) => {
+    const userId = req.user.id;
+    if (!userData[userId]) userData[userId] = { tasks: [], workLog: [] };
+    userData[userId].workLog.push(Number(req.body.hours));
+    res.redirect('/founders');
+});
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
