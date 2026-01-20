@@ -16,8 +16,6 @@ function ensureAuthenticated(req, res, next) {
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const RedisStore = require('connect-redis').default;
-const { createClient } = require('redis');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path');
@@ -26,19 +24,11 @@ const fs = require('fs');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// Redis client setup
-let redisClient = createClient({
-    url: process.env.REDIS_URL || 'redis://localhost:6379'
-});
-redisClient.connect().catch(console.error);
-
-// Session setup with Redis
+// Session setup (MemoryStore, not for production scale)
 app.use(session({
-    store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET || 'supersecretkey',
     resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false } // Set to true if using HTTPS
+    saveUninitialized: false
 }));
 
 // Passport setup
