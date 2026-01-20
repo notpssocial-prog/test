@@ -1,5 +1,4 @@
-// In-memory storage for demo (replace with DB for production)
-const userData = {};
+
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated && req.isAuthenticated()) return next();
