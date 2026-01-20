@@ -1,3 +1,10 @@
+// Log uncaught exceptions and unhandled promise rejections
+process.on('uncaughtException', err => {
+    console.error('Uncaught Exception:', err);
+});
+process.on('unhandledRejection', err => {
+    console.error('Unhandled Rejection:', err);
+});
 
 
 function ensureAuthenticated(req, res, next) {
