@@ -1,0 +1,15 @@
+{
+  "name": "founders-cloud",
+  "version": "1.0.0",
+  "description": "Founders Cloud Web Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
