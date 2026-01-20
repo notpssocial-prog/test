@@ -1,3 +1,13 @@
+// Serve static files
+app.use(express.static(path.join(__dirname)));
+
+// Health check
+app.get('/healthz', (req, res) => res.send('OK'));
+
+// Start server (must be last)
+app.listen(PORT, () => {
+    console.log(`🚀 Founders Cloud running at http://localhost:${PORT}`);
+});
 // Log uncaught exceptions and unhandled promise rejections
 process.on('uncaughtException', err => {
     console.error('Uncaught Exception:', err);
@@ -7,10 +17,6 @@ process.on('unhandledRejection', err => {
 });
 
 
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated && req.isAuthenticated()) return next();
-    res.redirect('/auth/google');
-}
 
 // All routes below app initialization
 // In-memory storage for demo (replace with DB for production)
