@@ -1,48 +1,4 @@
 
-// Founders Area route (must be after app and all middleware/routes)
-app.get('/founders', (req, res) => {
-    if (!req.isAuthenticated || !req.isAuthenticated()) {
-        return res.redirect('/auth/google');
-    }
-    const user = req.user;
-    const name = user.displayName || user.name?.givenName || 'Founder';
-    res.send(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Founders Area | Founders Cloud</title>
-        <link rel="stylesheet" href="/styles.css">
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <style>
-        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; }
-        .nav { width: 100%; background: #181818; padding: 1.2rem 0; display: flex; justify-content: center; gap: 2.5rem; margin-bottom: 2.5rem; box-shadow: 0 2px 16px #0004; }
-        .nav-link { color: #fff; text-decoration: none; font-size: 1.1rem; font-weight: 600; opacity: 0.7; padding-bottom: 2px; border-bottom: 2px solid transparent; transition: all 0.2s; }
-        .nav-link.active, .nav-link:hover { opacity: 1; border-bottom: 2px solid #fff; }
-        .founders-container { max-width: 600px; margin: 0 auto; background: #111; border-radius: 20px; box-shadow: 0 8px 40px #000a; padding: 2.5rem 2rem; text-align: center; }
-        .founders-title { font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem; }
-        .founders-desc { color: #aaa; font-size: 1.1rem; margin-bottom: 2rem; }
-        .back-btn { color: #fff; background: #000; border: 1px solid #fff; border-radius: 8px; padding: 0.7rem 2.2rem; font-size: 1.1rem; font-weight: 600; text-decoration: none; transition: background 0.2s, color 0.2s; }
-        .back-btn:hover { background: #fff; color: #000; }
-        </style>
-    </head>
-    <body>
-        <nav class="nav">
-            <a href="/profile" class="nav-link">Profile</a>
-            <a href="/founders" class="nav-link active">Founders Area</a>
-            <a href="/logout" class="nav-link">Logout</a>
-        </nav>
-        <div class="founders-container">
-            <div class="founders-title">Welcome to the Founders Area</div>
-            <div class="founders-desc">Hello, ${name}!<br>Here you can access exclusive resources, productivity tools, and connect with other founders.</div>
-            <a href="/profile" class="back-btn">Back to Profile</a>
-        </div>
-    </body>
-    </html>
-    `);
-});
 
 require('dotenv').config();
 const express = require('express');
