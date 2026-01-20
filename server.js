@@ -1,31 +1,4 @@
-// Serve static files
-app.use(express.static(path.join(__dirname)));
 
-// Health check
-app.get('/healthz', (req, res) => res.send('OK'));
-
-// Start server (must be last)
-app.listen(PORT, () => {
-    console.log(`🚀 Founders Cloud running at http://localhost:${PORT}`);
-});
-// Log uncaught exceptions and unhandled promise rejections
-process.on('uncaughtException', err => {
-    console.error('Uncaught Exception:', err);
-});
-process.on('unhandledRejection', err => {
-    console.error('Unhandled Rejection:', err);
-});
-
-
-
-// All routes below app initialization
-// In-memory storage for demo (replace with DB for production)
-const userData = {};
-
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated && req.isAuthenticated()) return next();
-    res.redirect('/auth/google');
-}
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -36,6 +9,29 @@ const fs = require('fs');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+
+// Serve static files
+app.use(express.static(path.join(__dirname)));
+
+// Health check
+app.get('/healthz', (req, res) => res.send('OK'));
+
+// Log uncaught exceptions and unhandled promise rejections
+process.on('uncaughtException', err => {
+    console.error('Uncaught Exception:', err);
+});
+process.on('unhandledRejection', err => {
+    console.error('Unhandled Rejection:', err);
+});
+
+// All routes below app initialization
+// In-memory storage for demo (replace with DB for production)
+const userData = {};
+
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated && req.isAuthenticated()) return next();
+    res.redirect('/auth/google');
+}
 
 // Session setup (MemoryStore, not for production scale)
 app.use(session({
@@ -76,6 +72,7 @@ app.get('/logout', (req, res) => {
         res.redirect('/');
     });
 });
+
 
 // Profile route (protected)
 app.get('/profile', (req, res) => {
@@ -158,5 +155,12 @@ app.get('/profile', (req, res) => {
     </body>
     </html>
     `);
+});
+
+// ...existing code...
+
+// Start server (must be last)
+app.listen(PORT, () => {
+    console.log(`🚀 Founders Cloud running at http://localhost:${PORT}`);
 });
 
