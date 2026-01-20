@@ -1,11 +1,4 @@
-// In-memory storage for demo (replace with DB for production)
-const userData = {};
-
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated && req.isAuthenticated()) return next();
-    res.redirect('/auth/google');
-}
-
+// Founders Area routes (must be after app is initialized)
 app.get('/founders', ensureAuthenticated, (req, res) => {
     const userId = req.user.id;
     if (!userData[userId]) {
@@ -88,6 +81,13 @@ app.post('/log-hours', express.urlencoded({ extended: true }), ensureAuthenticat
     userData[userId].workLog.push(Number(req.body.hours));
     res.redirect('/founders');
 });
+// In-memory storage for demo (replace with DB for production)
+const userData = {};
+
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated && req.isAuthenticated()) return next();
+    res.redirect('/auth/google');
+}
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
