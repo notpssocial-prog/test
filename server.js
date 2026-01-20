@@ -1,8 +1,7 @@
 
 // ...existing code...
 
-// Place this after app is initialized (after const app = express();)
-
+// Place this after all other routes and middleware
 // Founders Area route
 app.get('/founders', (req, res) => {
     if (!req.isAuthenticated || !req.isAuthenticated()) {
