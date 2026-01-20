@@ -1,8 +1,5 @@
 
-// ...existing code...
-
-// Place this after all other routes and middleware
-// Founders Area route
+// Founders Area route (must be after app and all middleware/routes)
 app.get('/founders', (req, res) => {
     if (!req.isAuthenticated || !req.isAuthenticated()) {
         return res.redirect('/auth/google');
